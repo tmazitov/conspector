@@ -19,27 +19,10 @@ func (c *Config) Setup(ctx *gin.Context) {
 
 	c.db = DB{}
 
-	flagutil.Subset(flags, "db", func(sub *flag.FlagSet) {
-		sub.StringVar(&c.db.username,
-			"username", "postgres",
-			"username for conection to db",
-		)
-
-		sub.StringVar(&c.db.password,
-			"password", "postgres",
-			"password for conection to db",
-		)
-
-		sub.StringVar(&c.db.name,
-			"name", "postgres",
-			"name for conection to db",
-		)
-
-		sub.StringVar(&c.db.host,
-			"host", "127.0.0.1:5432",
-			"host for conection to db",
-		)
-	})
+	flags.StringVar(&c.db.host,
+		"db_url", "127.0.0.1:5432",
+		"url for conection to db",
+	)
 
 	flagutil.Parse(ctx, flags,
 		flagutil.WithParser(&pargs.Parser{

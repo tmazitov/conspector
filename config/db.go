@@ -7,10 +7,7 @@ import (
 )
 
 type DB struct {
-	username string
-	password string
-	name     string
-	host     string
+	host string
 }
 
 func (db *DB) setup() (*sql.DB, error) {
