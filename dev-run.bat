@@ -1,1 +1,0 @@
-go run main.go --db.username "yyhoqorg" --db.password "DC0nUjY5mSLDs.050k5y0V40Q4w-.iA-" --db.name "yyhoqorg" --db.host "postgres://yyhoqorg:tUOBp_-sFHd5jzKE1f-YoQDyHu8kuVFI@rogue.db.elephantsql.com/yyhoqorg"
