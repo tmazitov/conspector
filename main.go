@@ -8,23 +8,27 @@ import (
 	"github.com/tmazitov/conspektor_backend.git/internal/auth"
 )
 
-var conf c.Config = c.Config{}
-
-func init() {
-	conf.Setup(&gin.Context{})
-}
-
 func main() {
-	conn, err := conf.SetupDB()
+
+	ctx := &gin.Context{}
+	conf := c.Config{}
+	if err := conf.Setup(ctx); err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := conf.SetupDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer conn.Close()
+	redis := conf.SetupRedis(ctx)
+
+	defer db.Close()
+	defer redis.Close()
 
 	r := gin.Default()
 
-	_ = auth.NewAuthService(r, conn)
+	_ = auth.NewAuthService(r, db, redis, conf)
 
 	r.Run("localhost:8000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

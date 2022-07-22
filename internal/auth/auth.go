@@ -4,18 +4,23 @@ import (
 	"database/sql"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
+	c "github.com/tmazitov/conspektor_backend.git/config"
 	"github.com/tmazitov/conspektor_backend.git/internal/auth/api"
 	"github.com/tmazitov/conspektor_backend.git/internal/auth/storage"
+	"github.com/tmazitov/conspektor_backend.git/pkg/jwt"
 )
 
 type AuthService struct {
 	Api *api.Api
 }
 
-func NewAuthService(router *gin.Engine, conn *sql.DB) *AuthService {
+func NewAuthService(router *gin.Engine, dbConn *sql.DB, redis *redis.Client, conf c.Config) *AuthService {
 
-	storage := storage.NewStorage(conn)
-	api := api.NewApi(router, storage)
+	storage := storage.NewStorage(dbConn)
+	jwt := jwt.NewStorage(redis, conf.GetSecret())
+
+	api := api.NewApi(router, storage, jwt)
 	service := AuthService{
 		Api: api,
 	}

@@ -2,34 +2,50 @@ package config
 
 import (
 	"database/sql"
-	"flag"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gobwas/flagutil"
-	"github.com/gobwas/flagutil/parse/pargs"
+	"github.com/go-redis/redis/v8"
 )
 
 type Config struct {
-	db DB
+	db    DBConfig
+	redis RedisConfig
 }
 
-func (c *Config) Setup(ctx *gin.Context) {
-	flags := flag.NewFlagSet("conspektor", flag.ExitOnError)
+func (c *Config) Setup(ctx *gin.Context) error {
+	jsonFile, err := os.Open("./config/config.json")
+	if err != nil {
+		return err
+	}
 
-	c.db = DB{}
+	defer jsonFile.Close()
 
-	flags.StringVar(&c.db.host,
-		"db_url", "127.0.0.1:5432",
-		"url for conection to db",
-	)
+	byteValue, _ := ioutil.ReadAll(jsonFile)
 
-	flagutil.Parse(ctx, flags,
-		flagutil.WithParser(&pargs.Parser{
-			Args: os.Args[1:],
-		}))
+	var result map[string]interface{}
+	json.Unmarshal([]byte(byteValue), &result)
+
+	c.db = DBConfig{}
+	c.redis = RedisConfig{}
+
+	c.db.host = fmt.Sprint(result["database_url"])
+	c.redis.secret = fmt.Sprint(result["secret_verify_key"])
+
+	return nil
+}
+
+func (c *Config) GetSecret() []byte {
+	return []byte(c.redis.secret)
 }
 
 func (c *Config) SetupDB() (*sql.DB, error) {
 	return c.db.setup()
+}
+
+func (c *Config) SetupRedis(ctx *gin.Context) *redis.Client {
+	return c.redis.setup(ctx)
 }
