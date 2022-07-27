@@ -34,14 +34,14 @@ func (a *Api) create(c *gin.Context) {
 		return
 	}
 
-	if err = a.Storage.CheckEmail(json.Email); err != nil {
+	if err = a.Storage.User.CheckEmail(json.Email); err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"status": c.Error(err),
 		})
 		return
 	}
 
-	if err = a.Storage.CheckUsername(json.Username); err != nil {
+	if err = a.Storage.User.CheckUsername(json.Username); err != nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"status": c.Error(err),
 		})
@@ -55,7 +55,7 @@ func (a *Api) create(c *gin.Context) {
 		Email:    json.Email,
 	}
 
-	if err = a.Storage.UserCreate(upload); err != nil {
+	if err = a.Storage.User.Create(upload); err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status": c.Error(err),
 		})

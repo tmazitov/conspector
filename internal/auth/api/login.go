@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tmazitov/conspektor_backend.git/internal/auth/dto"
 	"github.com/tmazitov/conspektor_backend.git/internal/auth/models"
 	"github.com/tmazitov/conspektor_backend.git/pkg/hash"
 )
@@ -32,16 +33,20 @@ func (a *Api) login(c *gin.Context) {
 		return
 	}
 
-	pass := hash.GenerateSha256(json.Password)
+	json.Password = hash.GenerateSha256(json.Password)
+	dto := dto.CheckPassword{
+		Username: json.Username,
+		Password: json.Password,
+	}
 
-	if err = a.Storage.CheckPassword(pass, json.Username); err != nil {
+	if err = a.Storage.User.CheckPassword(dto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": c.Error(err),
 		})
 		return
 	}
 
-	if user, err = a.Storage.GetUserInfo(json.Username); err != nil {
+	if user, err = a.Storage.User.Profile(json.Username); err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status": c.Error(err),
 		})

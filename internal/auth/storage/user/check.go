@@ -1,17 +1,19 @@
-package storage
+package user
 
 import (
 	"database/sql"
 	"errors"
+	"log"
+
+	"github.com/tmazitov/conspektor_backend.git/internal/auth/dto"
 )
 
 var (
-	ErrUsernameIsNotUnique = errors.New("invalid credentials")
-	ErrEmailIsNotUnique    = errors.New("invalid credentials")
-	ErrPasswordIsInvalid   = errors.New("invalid credentials")
+	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrServer             = errors.New("server error")
 )
 
-func (s *Storage) CheckUsername(username string) error {
+func (s *UserStorage) CheckUsername(username string) error {
 	var (
 		execResult *sql.Row
 		isExists   bool
@@ -23,17 +25,18 @@ func (s *Storage) CheckUsername(username string) error {
 	execResult = s.conn.QueryRow(execString, username)
 
 	if err = execResult.Scan(&isExists); err != nil {
-		return err
+		log.Printf("check username : %s", err)
+		return ErrServer
 	}
 
 	if isExists {
-		return ErrUsernameIsNotUnique
+		return ErrInvalidCredentials
 	}
 
 	return nil
 }
 
-func (s *Storage) CheckEmail(email string) error {
+func (s *UserStorage) CheckEmail(email string) error {
 	var (
 		execResult *sql.Row
 		isExists   bool
@@ -45,17 +48,18 @@ func (s *Storage) CheckEmail(email string) error {
 	execResult = s.conn.QueryRow(execString, email)
 
 	if err = execResult.Scan(&isExists); err != nil {
-		return err
+		log.Printf("check email : %s", err)
+		return ErrServer
 	}
 
 	if isExists {
-		return ErrEmailIsNotUnique
+		return ErrInvalidCredentials
 	}
 
 	return nil
 }
 
-func (s *Storage) CheckPassword(password string, username string) error {
+func (s *UserStorage) CheckPassword(check dto.CheckPassword) error {
 	var (
 		execResult      *sql.Row
 		storagePassword string
@@ -64,14 +68,15 @@ func (s *Storage) CheckPassword(password string, username string) error {
 	)
 
 	execString = "select password from users where username = $1"
-	execResult = s.conn.QueryRow(execString, username)
+	execResult = s.conn.QueryRow(execString, check.Username)
 
 	if err = execResult.Scan(&storagePassword); err != nil {
-		return err
+		log.Printf("check password : %s", err)
+		return ErrServer
 	}
 
-	if storagePassword != password {
-		return ErrPasswordIsInvalid
+	if storagePassword != check.Password {
+		return ErrInvalidCredentials
 	}
 
 	return nil

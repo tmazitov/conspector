@@ -1,4 +1,4 @@
-package storage
+package user
 
 import (
 	"database/sql"
@@ -6,7 +6,7 @@ import (
 	"github.com/tmazitov/conspektor_backend.git/internal/auth/models"
 )
 
-func (s *Storage) GetUserInfo(username string) (models.User, error) {
+func (s *UserStorage) Profile(username string) (models.User, error) {
 	var (
 		execResult *sql.Row
 		user       models.User
