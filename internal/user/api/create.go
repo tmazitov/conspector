@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
+	userDto "github.com/tmazitov/conspektor_backend.git/internal/user/dto/user"
 	"github.com/tmazitov/conspektor_backend.git/pkg/hash"
 )
 
@@ -48,7 +48,7 @@ func (a *Api) create(c *gin.Context) {
 		return
 	}
 
-	upload := dto.CreateUser{
+	upload := userDto.CreateUser{
 		Username: json.Username,
 		UID:      uuid.New().String(),
 		Password: hash.GenerateSha256(json.Password),

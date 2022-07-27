@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
+	userDto "github.com/tmazitov/conspektor_backend.git/internal/user/dto/user"
 	"github.com/tmazitov/conspektor_backend.git/internal/user/models"
 	"github.com/tmazitov/conspektor_backend.git/pkg/hash"
 )
@@ -34,7 +34,7 @@ func (a *Api) login(c *gin.Context) {
 	}
 
 	json.Password = hash.GenerateSha256(json.Password)
-	dto := dto.CheckPassword{
+	dto := userDto.CheckPassword{
 		Username: json.Username,
 		Password: json.Password,
 	}

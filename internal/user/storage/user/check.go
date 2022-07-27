@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
+	userDto "github.com/tmazitov/conspektor_backend.git/internal/user/dto/user"
 )
 
 var (
@@ -59,7 +59,7 @@ func (s *UserStorage) CheckEmail(email string) error {
 	return nil
 }
 
-func (s *UserStorage) CheckPassword(check dto.CheckPassword) error {
+func (s *UserStorage) CheckPassword(check userDto.CheckPassword) error {
 	var (
 		execResult      *sql.Row
 		storagePassword string

@@ -1,4 +1,4 @@
-package dto
+package userDto
 
 type CreateUser struct {
 	Username string
