@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	c "github.com/tmazitov/conspektor_backend.git/config"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth"
+	auth "github.com/tmazitov/conspektor_backend.git/internal/user"
 )
 
 func main() {

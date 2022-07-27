@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/dto"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/models"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/models"
 	"github.com/tmazitov/conspektor_backend.git/pkg/hash"
 )
 

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/dto"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
 )
 
 var (

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/dto"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/dto"
 )
 
 func (s *UserStorage) Create(user dto.CreateUser) error {

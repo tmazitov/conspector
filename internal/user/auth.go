@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	c "github.com/tmazitov/conspektor_backend.git/config"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/api"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/storage"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/api"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/storage"
 	"github.com/tmazitov/conspektor_backend.git/pkg/jwt"
 )
 

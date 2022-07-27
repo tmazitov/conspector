@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/storage"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/storage"
 	"github.com/tmazitov/conspektor_backend.git/pkg/jwt"
 )
 

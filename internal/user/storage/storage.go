@@ -3,7 +3,7 @@ package storage
 import (
 	"database/sql"
 
-	"github.com/tmazitov/conspektor_backend.git/internal/auth/storage/user"
+	"github.com/tmazitov/conspektor_backend.git/internal/user/storage/user"
 )
 
 type Storage struct {
