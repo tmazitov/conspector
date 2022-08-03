@@ -23,7 +23,7 @@ func NewPayload(username string, uid string, duration time.Duration) *Payload {
 
 func (payload *Payload) Valid() error {
 	if time.Now().After(payload.ExpiredAt) {
-		return ErrExpiredToken
+		return ErrInvalidToken
 	}
 	return nil
 }
