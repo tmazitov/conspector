@@ -27,9 +27,7 @@ func (a *Api) login(c *gin.Context) {
 		err       error
 	)
 	if err = c.BindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": c.Error(err),
-		})
+		ErrBadRequest(err, c)
 		return
 	}
 
@@ -40,25 +38,22 @@ func (a *Api) login(c *gin.Context) {
 	}
 
 	if err = a.Storage.User.CheckPassword(dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": c.Error(err),
-		})
+		ErrBadRequest(err, c)
 		return
 	}
 
-	if user, err = a.Storage.User.Profile(json.Username); err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"status": c.Error(err),
-		})
+	if user, err = a.Storage.User.ProfileByUsername(json.Username); err != nil {
+		ErrInternalServer(err, c)
 		return
 	}
 
-	if tokenPair, err = a.Jwt.CreateTokenPair(user.Username, user.UID); err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"status": c.Error(err),
-		})
+	if tokenPair, err = a.Jwt.CreateTokenPair(c, user.Username, user.UID); err != nil {
+		ErrInternalServer(err, c)
 		return
 	}
 
-	c.JSON(http.StatusOK, loginResponse{Access: tokenPair["access"], Refresh: tokenPair["refresh"]})
+	c.JSON(http.StatusOK, loginResponse{
+		Access:  tokenPair["access"],
+		Refresh: tokenPair["refresh"],
+	})
 }

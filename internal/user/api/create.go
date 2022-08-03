@@ -28,47 +28,40 @@ func (a *Api) create(c *gin.Context) {
 		err       error
 	)
 	if err := c.BindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": c.Error(err),
-		})
+		ErrBadRequest(err, c)
 		return
 	}
 
 	if err = a.Storage.User.CheckEmail(json.Email); err != nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"status": c.Error(err),
-		})
+		ErrDataConflict(err, c)
 		return
 	}
 
 	if err = a.Storage.User.CheckUsername(json.Username); err != nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"status": c.Error(err),
-		})
+		ErrDataConflict(err, c)
 		return
 	}
 
-	upload := userDto.CreateUser{
+	dto := userDto.CreateUser{
 		Username: json.Username,
 		UID:      uuid.New().String(),
 		Password: hash.GenerateSha256(json.Password),
 		Email:    json.Email,
 	}
 
-	if err = a.Storage.User.Create(upload); err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"status": c.Error(err),
-		})
+	if err = a.Storage.User.Create(dto); err != nil {
+		ErrInternalServer(err, c)
 		return
 	}
 
-	tokenPair, err = a.Jwt.CreateTokenPair(upload.Username, upload.UID)
+	tokenPair, err = a.Jwt.CreateTokenPair(c, dto.Username, dto.UID)
 	if err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"status": c.Error(err),
-		})
+		ErrInternalServer(err, c)
 		return
 	}
 
-	c.JSON(http.StatusCreated, createResponse{Access: tokenPair["access"], Refresh: tokenPair["refresh"]})
+	c.JSON(http.StatusCreated, createResponse{
+		Access:  tokenPair["access"],
+		Refresh: tokenPair["refresh"],
+	})
 }
