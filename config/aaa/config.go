@@ -1,4 +1,4 @@
-package config
+package aaa
 
 import (
 	"database/sql"
@@ -12,12 +12,13 @@ import (
 )
 
 type Config struct {
+	Path  string
 	db    DBConfig
 	redis RedisConfig
 }
 
 func (c *Config) Setup(ctx *gin.Context) error {
-	jsonFile, err := os.Open("./config/config.json")
+	jsonFile, err := os.Open(c.Path)
 	if err != nil {
 		return err
 	}

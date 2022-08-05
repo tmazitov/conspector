@@ -1,9 +1,11 @@
 package api
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
+	"github.com/tmazitov/conspektor_backend.git/internal/aaa/storage"
 	"github.com/tmazitov/conspektor_backend.git/internal/middleware"
-	"github.com/tmazitov/conspektor_backend.git/internal/user/storage"
 	"github.com/tmazitov/conspektor_backend.git/pkg/jwt"
 )
 
@@ -14,7 +16,7 @@ type Api struct {
 	Jwt     *jwt.Storage
 }
 
-func NewApi(router *gin.Engine, storage *storage.Storage, jwt *jwt.Storage, middle *middleware.Middleware) *Api {
+func SetupApi(router *gin.Engine, storage *storage.Storage, jwt *jwt.Storage, middle *middleware.Middleware) {
 
 	api := Api{Router: router, Storage: storage, Jwt: jwt, middle: middle}
 
@@ -27,5 +29,5 @@ func NewApi(router *gin.Engine, storage *storage.Storage, jwt *jwt.Storage, midd
 	user := router.Group("/user").Use(api.middle.Authorized())
 	user.GET("/:uid", api.profile)
 
-	return &api
+	log.Println("aaa : api success")
 }

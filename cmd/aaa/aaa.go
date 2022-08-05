@@ -4,14 +4,14 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	c "github.com/tmazitov/conspektor_backend.git/config"
-	auth "github.com/tmazitov/conspektor_backend.git/internal/user"
+	config "github.com/tmazitov/conspektor_backend.git/config/aaa"
+	aaa "github.com/tmazitov/conspektor_backend.git/internal/aaa"
 )
 
 func main() {
 
 	ctx := &gin.Context{}
-	conf := c.Config{}
+	conf := config.Config{Path: "../../config/aaa/config.json"}
 	if err := conf.Setup(ctx); err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func main() {
 
 	r := gin.Default()
 
-	_ = auth.NewAuthService(r, db, redis, conf)
+	aaa.SetupService(r, db, redis, conf)
 
-	r.Run("localhost:8000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	r.Run("localhost:8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

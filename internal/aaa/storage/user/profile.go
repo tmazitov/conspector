@@ -3,7 +3,7 @@ package user
 import (
 	"database/sql"
 
-	"github.com/tmazitov/conspektor_backend.git/internal/user/models"
+	"github.com/tmazitov/conspektor_backend.git/internal/aaa/models"
 )
 
 func (s *UserStorage) ProfileByUsername(username string) (models.User, error) {

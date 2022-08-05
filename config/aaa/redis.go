@@ -1,4 +1,4 @@
-package config
+package aaa
 
 import (
 	"github.com/gin-gonic/gin"

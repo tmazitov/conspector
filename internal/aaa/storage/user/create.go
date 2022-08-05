@@ -1,6 +1,6 @@
 package user
 
-import userDto "github.com/tmazitov/conspektor_backend.git/internal/user/dto/user"
+import userDto "github.com/tmazitov/conspektor_backend.git/internal/aaa/dto/user"
 
 func (s *UserStorage) Create(user userDto.CreateUser) error {
 	execString := "insert into Users (username, password, email, uid) values ($1, $2, $3, $4)"

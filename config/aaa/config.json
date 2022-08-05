@@ -1,0 +1,4 @@
+{
+    "secret_verify_key": "63dd7d31ffbef4093db5a65d8860940263db9e011a125e8b2019d5b8034b5b7e",
+    "database_url": "postgres://yyhoqorg:p8f3zCtSim5QVhYtuWslfR9FMUVpvy8G@rogue.db.elephantsql.com/yyhoqorg"
+}

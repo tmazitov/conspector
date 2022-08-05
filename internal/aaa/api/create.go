@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	userDto "github.com/tmazitov/conspektor_backend.git/internal/user/dto/user"
+	userDto "github.com/tmazitov/conspektor_backend.git/internal/aaa/dto/user"
 	"github.com/tmazitov/conspektor_backend.git/pkg/hash"
 )
 

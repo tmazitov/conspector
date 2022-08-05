@@ -2,8 +2,9 @@ package storage
 
 import (
 	"database/sql"
+	"log"
 
-	"github.com/tmazitov/conspektor_backend.git/internal/user/storage/user"
+	"github.com/tmazitov/conspektor_backend.git/internal/aaa/storage/user"
 )
 
 type Storage struct {
@@ -18,6 +19,8 @@ func NewStorage(conn *sql.DB) *Storage {
 		conn: conn,
 		User: *user,
 	}
+
+	log.Println("aaa : storage success")
 
 	return &storage
 }

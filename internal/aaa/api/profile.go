@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tmazitov/conspektor_backend.git/internal/user/models"
+	"github.com/tmazitov/conspektor_backend.git/internal/aaa/models"
 )
 
 type Request struct {
